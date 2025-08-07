@@ -1,5 +1,5 @@
-const { hash } = require('bcryptjs');
-const User = require('../models/Users.js');
+const { hash } = require("bcryptjs");
+const User = require("../models/Users.js");
 
 async function add(data) {
   const hashedPw = await hash(data.password, 12);
@@ -7,14 +7,21 @@ async function add(data) {
     name: data.name,
     email: data.email,
     password: hashedPw,
+    companyName: data.companyName,
+    jobTitle: data.jobTitle,
   });
   await user.save();
-  return { id: user._id, email: user.email };
+  return {
+    id: user._id,
+    email: user.email,
+    companyName: user.companyName,
+    jobTitle: user.jobTitle,
+  };
 }
 
 async function get(email) {
   const user = await User.findOne({ email });
-  if (!user) throw new Error('User not found');
+  if (!user) throw new Error("User not found");
   return user;
 }
 
